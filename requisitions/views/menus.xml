@@ -1,0 +1,5 @@
+<odoo>
+
+    <menuitem id="requisition_main_menu" name="Requisitions" sequence="8" web_icon="requisition,static/src/img/icon.png"/>
+    
+</odoo>

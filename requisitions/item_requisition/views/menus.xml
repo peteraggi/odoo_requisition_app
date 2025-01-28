@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.actions.act_window" id="item_requisition_action">
+        <field name="name">Item Requisition</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="all_item_requisition_action">
+        <field name="name">All Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="domain">[('state','=','draft')]</field> -->
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="draft_item_requisition_action">
+        <field name="name">Draft Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','draft')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="submitted_item_requisition_action">
+        <field name="name">Submitted Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','submitted')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="approved_item_requisition_action">
+        <field name="name">Approved Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','approved')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="done_item_requisition_action">
+        <field name="name">Done Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','done')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="cancelled_item_requisition_action">
+        <field name="name">Cancelled Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','cancel')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="rejected_item_requisition_action">
+        <field name="name">Rejected Item Requisitions</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','rejected')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <menuitem id="item_requisition_menu" action="item_requisition_action" parent="requisition_main_menu" name="Item Requisitions"  sequence="2"/>
+
+    <!-- Sub Menus -->
+    <menuitem id="all_item_requisition_menu" action="all_item_requisition_action" parent="item_requisition_menu" name="All Requisitions" sequence="-1"/>
+    <menuitem id="draft_item_requisition_menu" action="draft_item_requisition_action" parent="item_requisition_menu" name="Draft Requisitions" sequence="1"/>
+    <menuitem id="submitted_item_requisition_menu" action="submitted_item_requisition_action" parent="item_requisition_menu" name="Submitted Requisitions" sequence="2"/>
+    <menuitem id="approved_item_requisition_menu" action="approved_item_requisition_action" parent="item_requisition_menu" name="Approved Requisitions" sequence="3"/>
+    <menuitem id="done_item_requisition_menu" action="done_item_requisition_action" parent="item_requisition_menu" name="Done Requisitions" sequence="4"/>
+    <menuitem id="cancelled_item_requisition_menu" action="cancelled_item_requisition_action" parent="item_requisition_menu" name="Cancelled Requisitions" sequence="5"/>
+    <menuitem id="rejected_item_requisition_menu" action="rejected_item_requisition_action" parent="item_requisition_menu" name="Rejected Requisitions" sequence="6"/>
+
+    <!-- Inventory Requisition menu -->
+    <menuitem id="menu_procurement_management_item_requisition" name="Item Requisitions" parent="stock.menu_stock_root" sequence="20" action="item_requisition_action"/>
+
+</odoo>

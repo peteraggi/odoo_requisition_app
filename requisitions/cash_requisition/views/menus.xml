@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.actions.act_window" id="cash_requesition_action">
+        <field name="name">Cash requisition</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="all_cash_requesition_action">
+        <field name="name">All Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="domain">[('state','=','draft')]</field> -->
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="draft_cash_requesition_action">
+        <field name="name">Draft Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','draft')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="submitted_cash_requesition_action">
+        <field name="name">Submitted Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','submitted')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="approved_cash_requesition_action">
+        <field name="name">Approved Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','approved')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="cash_out_requesition_action">
+        <field name="name">Cash Out requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','cash_out')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="done_cash_requesition_action">
+        <field name="name">Done Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','done')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="cancelled_cash_requesition_action">
+        <field name="name">Cancelled Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','cancel')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="rejected_cash_requesition_action">
+        <field name="name">Rejected Cash requisitions</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','=','reject')]</field>
+        <field name="help" type="html">
+            <p>You can start your Item requisition moves here</p>
+        </field>
+    </record>
+
+    <menuitem id="cash_requesition_menu" action="cash_requesition_action" parent="requisition_main_menu" name="Cash requisitions" sequence="1"/>
+
+    <!-- Sub Menus -->
+     <menuitem id="all_cash_requesition_menu" action="all_cash_requesition_action" parent="cash_requesition_menu" name="All Requisitions" sequence="-1"/>
+    <menuitem id="draft_cash_requesition_menu" action="draft_cash_requesition_action" parent="cash_requesition_menu" name="Draft Requisitions" sequence="1"/>
+    <menuitem id="submitted_cash_requesition_menu" action="submitted_cash_requesition_action" parent="cash_requesition_menu" name="Submitted Requisitions" sequence="2"/>
+    <menuitem id="approved_cash_requesition_menu" action="approved_cash_requesition_action" parent="cash_requesition_menu" name="Approved Requisitions" sequence="3"/>
+    <menuitem id="cash_out_requesition_menu" action="cash_out_requesition_action" parent="cash_requesition_menu" name="Cash Out Requisitions" sequence="4"/>
+    <menuitem id="done_cash_requesition_menu" action="done_cash_requesition_action" parent="cash_requesition_menu" name="Done Requisitions" sequence="4"/>
+    <menuitem id="cancelled_cash_requesition_menu" action="cancelled_cash_requesition_action" parent="cash_requesition_menu" name="Cancelled Requisitions" sequence="5"/>
+    <menuitem id="rejected_cash_requesition_menu" action="rejected_cash_requesition_action" parent="cash_requesition_menu" name="Rejected Requisitions" sequence="6"/>
+
+</odoo>

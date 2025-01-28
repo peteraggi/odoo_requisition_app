@@ -1,0 +1,17 @@
+<odoo>
+
+    <record model="ir.module.category" id="module_category_item_requisition">
+        <field name="name">Item Requsition</field>
+        <field name="sequence">8</field>
+    </record>
+
+    <record id="item_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_item_requisition"/>
+    </record>
+    <record id="item_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_item_requisition"/>
+    </record>
+
+</odoo>

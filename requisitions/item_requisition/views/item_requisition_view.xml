@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Requisition form -->
+        <record model="ir.ui.view" id="item_requisition_form" > 
+            <field name="name">item.requisition.form</field>
+            <field name="model">item.requisition</field>
+            <field name="arch" type="xml">
+                <form string="Item Requisition">
+                    <header>
+                        <button name="submit_for_approval" type="object" string="Submit" invisible="state != 'draft'" class="oe_highlight" confirm="Are you sure you want to submit this Requsition?"/>
+                        <button confirm="Are you sure you want to Approve this Requsition?" name="approve" invisible="state != 'submitted'"  string="Approve Requisition" type="object" class="oe_highlight" groups="requisitions.item_group_manager"/>
+                        <button name="action_approve_item_requisition" invisible="state != 'approved'" string="Create Stock Transfer" class="oe_highlight" type="object" groups="requisitions.item_group_manager"/>
+                        <button name="reject" confirm="Are you sure you want to reject this Requisition?" invisible="state != 'submitted'" string="Reject" type="object" groups="requisitions.item_group_manager"/>
+                        <button name="cancel" confirm="Are you sure you want to cancel this Requisition?" invisible="state not in ['submitted','draft']" string="Cancel" type="object" groups="requisitions.item_group_user"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_left" style="width: 500px;">
+                            <br/>
+                            <div class="oe_title" style="width: 390px;">
+                                <h1><field name="name" readonly="1"/></h1>
+                            </div>
+                        </div>
+                        <div class="oe_button_box" name="button_box">
+                            <button  invisible="state not in ('approve','done')" type="action" 
+                                class="oe_stat_button" name="%(stock.action_picking_tree_all)d"                                 
+                                context="{'search_default_requisition_id': id}" icon="fa-list">
+                                Stock Transfer
+                            </button>                            
+                        </div>
+                        <group>
+                            <group>                                
+                                <field name="warehouse_id" invisible='1'/>
+                                <field name="partner_id" invisible="1"/>
+                                <field name="requested_by" string='Requested By' readonly='1' force_save="1"/>
+                                <field name="delivery_date" readonly="state in ('approved', 'cancel', 'done', 'rejected')"/>
+                            </group>
+                            <group>
+                                <field name='user' readonly='1' force_save="1"/>
+                                <field name='source' invisible="state == 'draft'" required="state == 'submitted'"/>
+                                <field name='destination' required="1" readonly="state not in ('draft','submitted')" widget="selection"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="order_line" readonly="state not in ('draft','submitted')">
+                                    <tree string="Purchase Order Lines" editable="bottom">
+                                        <field name="product_id" required="1"/>
+                                        <field name="product_qty" required="1"/>
+                                        <field name="product_uom"/>
+                                    </tree>                                    
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Requisition action -->
+        <record model="ir.actions.act_window" id="item_requisition_action" >
+            <field name="name">Item Requisitions</field>
+            <field name="res_model">item.requisition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create The First Item Requisition
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="item_requisition_action" >
+            <field name="name">Item Requisitions</field>
+            <field name="res_model">item.requisition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create The First Item Requisition
+                </p>
+            </field>
+        </record>
+
+        <!-- Requisition tree -->
+        <record model="ir.ui.view" id="item_requisition_tree" >
+            <field name="name">item.requisition.tree</field>
+            <field name="model">item.requisition</field>
+            <field name="arch" type="xml">
+                <tree default_order='create_date desc' string="Item Requisition">
+                    <field name="id" invisible="1"/>
+                    <field name="name" string="Name"/>
+                    <field name="warehouse_id" invisible='1'/>
+                    <field name="create_uid" string='Requested By'/>
+                    <field name="delivery_date" />                   
+                    <field name='user'/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="transfer_with_requsition_form" >
+            <field name="name">Transfer with Requisition</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="requisition_id" readonly='1' invisible="requisition_id == False"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="transfer_view_search_inherit" model="ir.ui.view">
+            <field name="name">transfer.search.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position='after'>
+                    <field name='requisition_id'/>
+                </field>
+                <xpath expr="//search/group" position="inside">
+                    <filter string="Items Requisition" name="requisition_id" />
+                </xpath>
+            </field>
+        </record>
+
+
+    <record id="item_requisition_order_line_form" model="ir.ui.view">
+        <field name="name"> Item Requisition Order Line Form</field>
+        <field name="model">item.requisition.order.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="name" string="Record" readonly="1" force_save="1"/>
+                        <field name="product_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                    </group>
+                    <group>
+                        <field name="product_qty" />
+                        <field name="product_uom"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="item_requisition_approval_email" model="mail.template">
+        <field name="name">Item Requistion Approval</field>
+        <field name="model_id" ref="requisitions.model_item_requisition"/>
+        <field name="email_from">${object.create_uid.email_formatted | safe}</field>
+        <field name="email_to">@jilinsights.com</field>
+        <field name="subject">Item Requisition Awaiting Approval</field>
+        <field name="body_html" type="html">
+          <div style="margin:0px;padding:0px;">
+            <p style="margin:0px;padding:0px;font-size:14px;">
+                Greetings,<br/><br/>
+                You have an item requsition number ${object.name} pending approval.<br/>
+                Requested by : ${object.create_uid.name}
+            </p>
+          </div>
+        </field>
+    </record>
+
+
+    <record id="item_requisition_order_line_seq" model="ir.sequence">
+        <field name="name">Item Requisition Order Lines Sequence</field>
+        <field name="code">item.requisition.order.line</field>
+        <field name="prefix">Item Requisition Line - </field>
+        <field name="padding">1</field>
+    </record>
+
+
+    
+
+
+</odoo>

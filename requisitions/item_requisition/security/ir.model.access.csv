@@ -1,0 +1,5 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+item_requisition_id,item.requisition,model_item_requisition,requisitions.item_group_manager,1,1,1,1
+item_requisition_line_id,item.requisition.order.line,model_item_requisition_order_line,requisitions.item_group_manager,1,1,1,1
+item_requisition_id_user,item.requisition,model_item_requisition,requisitions.item_group_user,1,1,1,1
+item_requisition_line_id_user,item.requisition.order.line,model_item_requisition_order_line,requisitions.item_group_user,1,1,1,1

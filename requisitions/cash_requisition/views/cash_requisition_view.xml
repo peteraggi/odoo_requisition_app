@@ -1,0 +1,131 @@
+<odoo>
+
+    <record id="cash_requisition_seq" model="ir.sequence">
+        <field name="name">Cash Requisition Sequence</field>
+        <field name="code">cash.request</field>
+        <field name="prefix">CSH REQ - </field>
+        <field name="padding">1</field>
+    </record>
+
+    <!-- Menu & action -->
+    <record model="ir.actions.act_window" id="cash_requisition_action">
+        <field name="name">Cash Requisition</field>
+        <field name="res_model">cash.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>You can start your cash requisition moves here</p>
+        </field>
+    </record>
+
+    <!-- <record model="ir.actions.act_window" id="item_requisition_action">
+        <field name="name">Stock Requisition</field>
+        <field name="res_model">item.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>You can start your Stock requisition moves here</p>
+        </field>
+    </record> -->
+
+    <menuitem id="requisition_main_menu" name="Requisitions" sequence="8" web_icon="requisition,static/src/img/icon.png"/>
+
+    <record id="footstep_cash_requisition_list" model="ir.ui.view">
+        <field name="name">Cash Requisition</field>
+        <field name="model">cash.request</field>
+        <field name="arch" type="xml">
+            <tree string="Cash Requisition">
+                <field name="name"/>
+                <field name="requested_by"/>
+                <field name="date"/>
+                <field name="amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="cash_requisition_form" model="ir.ui.view">
+        <field name="name">Cash Requisition</field>
+        <field name="model">cash.request</field>
+        <field name="arch" type="xml">
+            <form string="Cash Requisition">
+                <header>
+                    <button name="btn_mv_submitted" type="object" string="Submit Request" class="oe_highlight" confirm="Are you sure you want to submit this cash request?" invisible="state != 'draft'" />
+                    <button name="approve_request" type="object" string="Approve Request" invisible="state != 'submitted'" confirm="Are you sure you want to approve this cash request?" class="oe_highlight" groups="requisitions.cash_group_manager"/>
+                    <button name="cash_request" type="object" string="Cash Out" invisible="state != 'cash_out'" class="oe_highlight" confirm="Are you sure you want to complete this cash request?" groups="requisitions.cash_group_manager"/>
+                    <button name="reject_request" type="object" string="Reject Request" invisible="state !='submitted'" confirm="Are you sure you want to reject this cash request?" groups="requisitions.cash_group_manager"/>
+                    <button name="cancel_request" type="object" string="Cancel Request" confirm="Are you sure you want to cancel this cash request?" invisible="state not in ['submitted','draft']" groups="requisitions.cash_group_user"/>
+
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,cash_out,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button invisible="state not in ('approve','done')" type="action" class="oe_stat_button" name="%(account.action_move_in_receipt_type)d" context="{'search_default_requisition_id': id}" icon="fa-money" style="width: 200px;">
+                            Payment Receipt
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+
+                    <group>
+                        <group>
+                            <field name="requested_by" readonly="1" force_save="1"/>
+                            <field name="department_id" readonly="1" force_save="1"/>
+                            <field name="user" widget="selection" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="approval_date" readonly="1"/>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+
+                            <field name="line_ids" readonly="state not in ('draft','submitted','cash_out')">
+                                
+                                <tree editable="bottom">
+                                    <field name="item" required="1"/>
+                                    <field name="description"/>
+                                    <field name="account_id" string="Cost Center"/>
+                                    <field name="qty" required="1"/>
+                                    <field name="unit_price" required="1"/>
+                                    <!-- <field name="attachment" /> -->
+                                    <field name="total_price" readonly="1" force_save="1"/>
+                                </tree>
+                               
+                            </field>
+                        </page>
+                        <page string="Reject Reason">
+                            <field name="notes" readonly="state not in ['reject']" invisible="state != 'reject'"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="account_invoice_select_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.select.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <field name="journal_id" position='after'>
+                <field name='requisition_id'/>
+            </field>
+            <xpath expr="//search/group" position="inside">
+                <filter string="Cash Requisition" name="requisition_id" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
